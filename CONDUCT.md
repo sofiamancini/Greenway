@@ -90,4 +90,4 @@ For answers to common questions about this code of conduct, see the FAQ at
 [FAQ]: https://www.contributor-covenant.org/faq
 [translations]: https://www.contributor-covenant.org/translations
 
-[![jay signature](src/20241010_095004.jpg)][![sofia signature](src/SofiaSig.jpg)][![colleen signature](src/ColleenQuinnSignature.jpg)][![junrong signature](src/JunrongSignature.jpg)]
+![jay signature](src/20241010_095004.jpg) ![sofia signature](src/SofiaSig.jpg) ![colleen signature](src/ColleenQuinnSignature.jpg) ![junrong signature](src/JunrongSignature.jpg)

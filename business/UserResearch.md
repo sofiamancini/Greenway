@@ -17,3 +17,8 @@ Observation 4:
 - Customers prefer dark mode theme more for the mobile app.
 - In our survey, users consistently voted for prefer dark mode theme for mobile apps.
 - We plan to set the default theme of our app to dark mode theme. 
+
+Obervation 5: 
+  -Customers are interested in reducing their energy consumption.
+  -In our survey, the highest amount of users suggested that they would like to set energy saving goals.
+  -We plan on making the reduction of energy consumption an easily viewable statistic on the main screen.

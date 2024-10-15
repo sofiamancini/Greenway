@@ -12,3 +12,8 @@ Observation 3:
 - Users are indifferent about using an app to track sustainability unless it is easy to use.
 - In our survey users consistently voted that they were concerned with their environmental impact but only slightly more likely to use an app for tracking purposes.
 - We plan to use a barcode scanner and auto-saving items to reduce the amount of input required from the user.
+
+Observation 4: 
+- Customers prefer dark mode theme more for the mobile app.
+- In our survey, users consistently voted for prefer dark mode theme for mobile apps.
+- We plan to set the default theme of our app to dark mode theme. 

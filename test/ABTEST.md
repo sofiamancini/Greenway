@@ -80,5 +80,6 @@ Variation A - A Log Goal button that appears in a row conjunction to the New Goa
 
 Mockup: A 40x40 approximate rounded box button that is identical to the rest of buttons on the row.
 
+Variation B - A Log Goal button that is detached from the actual screen, and has a plus on it.
 Mockup: A smaller floating button on the right hand corner of the screen, similar color scheme.
 

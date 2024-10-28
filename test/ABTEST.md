@@ -55,3 +55,30 @@ Variations:
 Variation A: Survey after logging a goal (users will be directed to the survey page, asking for app rating and likelihood to recommend the app immediately after logging their goal).
 Variation B: Survey after logging out (users are prompted to rate the app and indicate their recommendation likelihood upon logging out).
 
+
+
+A/B Test Name: Log Goal Button Location
+User Story Number: US4 (Goal Progress Visualization) 
+Metrics: Engagement: Percentage of users who interact with the button. 
+Retention: Percentage of users who return to check their progress over a 7-day period. 
+Task Success: Rate of clicks on the Log Goal button. 
+Satisfaction: User satisfaction score from post-interaction surveys. 
+Hypothesis: 
+A log goal button that not included on the main screen could be more intuitive, as it is directly designed as a button that would draw that user's attention to adding something better than a text button would.
+
+What Problem Are We Trying to Solve? Its Impact? 
+Problem: Users may be confused by what logging a goal means, and would likely have a better understanding of the simple floating icon button rather than a dedicated log goal button.
+Impact: Improving the button location and style could help with user retention in the sense that it would be easier to log their goals.
+
+Experiment: 
+Audience: We shall target 50% of the user base for the experiment, with a 50/50 split between the two progress bar sizes. 
+Tracking: Using Firebase Analytics, set up event tracking for: 
+Interactions with the button.
+Post-interaction satisfaction feedback (optional). 
+Variations: 
+Variation A - A Log Goal button that appears in a row conjunction to the New Goal and Edit Goal buttons.
+
+Mockup: A 40x40 approximate rounded box button that is identical to the rest of buttons on the row.
+
+Mockup: A smaller floating button on the right hand corner of the screen, similar color scheme.
+

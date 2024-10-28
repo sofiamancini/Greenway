@@ -70,12 +70,12 @@ What Problem Are We Trying to Solve? Its Impact?
 Problem: Users may be confused by what logging a goal means, and would likely have a better understanding of the simple floating icon button rather than a dedicated log goal button.
 Impact: Improving the button location and style could help with user retention in the sense that it would be easier to log their goals.
 
-Experiment: 
-Audience: We shall target 50% of the user base for the experiment, with a 50/50 split between the two progress bar sizes. 
-Tracking: Using Firebase Analytics, set up event tracking for: 
+Experiment:
+Audience: We shall target 50% of the user base for the experiment, with a 50/50 split between the two progress bar sizes.
+Tracking: Using Firebase Analytics, set up event tracking for:
 Interactions with the button.
-Post-interaction satisfaction feedback (optional). 
-Variations: 
+Post-interaction satisfaction feedback (optional).
+Variations:
 Variation A - A Log Goal button that appears in a row conjunction to the New Goal and Edit Goal buttons.
 
 Mockup: A 40x40 approximate rounded box button that is identical to the rest of buttons on the row.

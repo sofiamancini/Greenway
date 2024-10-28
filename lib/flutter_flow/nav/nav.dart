@@ -72,13 +72,13 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
       errorBuilder: (context, state) =>
-          appStateNotifier.loggedIn ? const BlankWidget() : const HomePageWidget(),
+          appStateNotifier.loggedIn ? const MainWidget() : const HomePageWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
           builder: (context, _) =>
-              appStateNotifier.loggedIn ? const BlankWidget() : const HomePageWidget(),
+              appStateNotifier.loggedIn ? const MainWidget() : const HomePageWidget(),
         ),
         FFRoute(
           name: 'HomePage',
@@ -86,14 +86,34 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => const HomePageWidget(),
         ),
         FFRoute(
-          name: 'blank',
-          path: '/blank',
-          builder: (context, params) => const BlankWidget(),
+          name: 'Main',
+          path: '/main',
+          builder: (context, params) => const MainWidget(),
         ),
         FFRoute(
           name: 'onboarding',
           path: '/onboarding',
           builder: (context, params) => const OnboardingWidget(),
+        ),
+        FFRoute(
+          name: 'NewGoal',
+          path: '/newGoal',
+          builder: (context, params) => const NewGoalWidget(),
+        ),
+        FFRoute(
+          name: 'EditGoal',
+          path: '/EditGoal',
+          builder: (context, params) => const EditGoalWidget(),
+        ),
+        FFRoute(
+          name: 'LogGoal',
+          path: '/LogGoal',
+          builder: (context, params) => const LogGoalWidget(),
+        ),
+        FFRoute(
+          name: 'Survey',
+          path: '/survey',
+          builder: (context, params) => const SurveyWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

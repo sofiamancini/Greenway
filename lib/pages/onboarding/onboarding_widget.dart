@@ -28,6 +28,7 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
     super.initState();
     _model = createModel(context, () => OnboardingModel());
 
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'onboarding'});
     _model.textController ??= TextEditingController();
     _model.textFieldFocusNode ??= FocusNode();
 
@@ -114,6 +115,10 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
+                                  logFirebaseEvent(
+                                      'ONBOARDING_PAGE_Stack_f8ljrwrz_ON_TAP');
+                                  logFirebaseEvent(
+                                      'Stack_upload_media_to_firebase');
                                   final selectedMedia =
                                       await selectMediaWithSourceBottomSheet(
                                     context: context,
@@ -170,6 +175,8 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                                       return;
                                     }
                                   }
+
+                                  logFirebaseEvent('Stack_backend_call');
 
                                   await currentUserReference!
                                       .update(createUsersRecordData(
@@ -329,10 +336,11 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                                     color: const Color(0x9997B381),
                                     boxShadow: const [
                                       BoxShadow(
+                                        blurRadius: 4.0,
                                         color: Color(0x33000000),
                                         offset: Offset(
                                           0.0,
-                                          5.0,
+                                          2.0,
                                         ),
                                       )
                                     ],
@@ -346,16 +354,20 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                                   child: Column(
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
-                                      Text(
-                                        'Enable notifications?',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .override(
-                                              fontFamily: 'Inter',
-                                              fontSize: 12.0,
-                                              letterSpacing: 0.0,
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                                      Padding(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 10.0, 0.0, 0.0),
+                                        child: Text(
+                                          'Enable notifications?',
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily: 'Inter',
+                                                fontSize: 12.0,
+                                                letterSpacing: 0.0,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                        ),
                                       ),
                                       Theme(
                                         data: ThemeData(
@@ -402,13 +414,18 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                                     0.0, 100.0, 0.0, 0.0),
                                 child: FFButtonWidget(
                                   onPressed: () async {
+                                    logFirebaseEvent(
+                                        'ONBOARDING_PAGE_CONTINUE_BTN_ON_TAP');
+                                    logFirebaseEvent('Button_backend_call');
+
                                     await currentUserReference!
                                         .update(createUsersRecordData(
                                       displayName: _model.textController.text,
                                       notifs: _model.checkboxValue,
                                     ));
+                                    logFirebaseEvent('Button_navigate_to');
 
-                                    context.goNamed('blank');
+                                    context.goNamed('Main');
                                   },
                                   text: 'Continue',
                                   options: FFButtonOptions(

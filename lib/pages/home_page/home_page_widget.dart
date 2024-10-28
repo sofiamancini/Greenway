@@ -27,6 +27,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
     super.initState();
     _model = createModel(context, () => HomePageModel());
 
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'HomePage'});
     _model.tabBarController = TabController(
       vsync: this,
       length: 2,
@@ -535,6 +536,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             () => safeSetState(() {}),
                                           ),
                                           autofocus: false,
+                                          textInputAction: TextInputAction.next,
                                           obscureText: false,
                                           decoration: InputDecoration(
                                             isDense: true,
@@ -629,6 +631,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                         .primaryText,
                                                 letterSpacing: 0.0,
                                               ),
+                                          keyboardType:
+                                              TextInputType.emailAddress,
                                           cursorColor:
                                               FlutterFlowTheme.of(context)
                                                   .primaryText,
@@ -768,10 +772,14 @@ class _HomePageWidgetState extends State<HomePageWidget>
                           if (_model.tabBarCurrentIndex == 1)
                             FFButtonWidget(
                               onPressed: () async {
+                                logFirebaseEvent(
+                                    'HOME_PAGE_PAGE_Login-Button_ON_TAP');
+                                logFirebaseEvent('Login-Button_validate_form');
                                 if (_model.formKey1.currentState == null ||
                                     !_model.formKey1.currentState!.validate()) {
                                   return;
                                 }
+                                logFirebaseEvent('Login-Button_auth');
                                 GoRouter.of(context).prepareAuthEvent();
 
                                 final user = await authManager.signInWithEmail(
@@ -783,7 +791,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                   return;
                                 }
 
-                                context.goNamedAuth('blank', context.mounted);
+                                logFirebaseEvent(
+                                    'Login-Button_google_analytics_event');
+                                logFirebaseEvent('logged_in');
+                                logFirebaseEvent('Login-Button_navigate_to');
+
+                                context.goNamedAuth('Main', context.mounted);
                               },
                               text: 'Login',
                               options: FFButtonOptions(
@@ -817,11 +830,16 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                   0.0, 0.0, 0.0, 20.0),
                               child: FFButtonWidget(
                                 onPressed: () async {
+                                  logFirebaseEvent(
+                                      'HOME_PAGE_PAGE_Signup-Button_ON_TAP');
+                                  logFirebaseEvent(
+                                      'Signup-Button_validate_form');
                                   if (_model.formKey2.currentState == null ||
                                       !_model.formKey2.currentState!
                                           .validate()) {
                                     return;
                                   }
+                                  logFirebaseEvent('Signup-Button_auth');
                                   GoRouter.of(context).prepareAuthEvent();
                                   if (_model
                                           .signupPasswordTextController.text !=
@@ -856,6 +874,11 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                         ),
                                         createdTime: getCurrentTimestamp,
                                       ));
+
+                                  logFirebaseEvent(
+                                      'Signup-Button_google_analytics_event');
+                                  logFirebaseEvent('signed_up');
+                                  logFirebaseEvent('Signup-Button_navigate_to');
 
                                   context.goNamedAuth(
                                       'onboarding', context.mounted);

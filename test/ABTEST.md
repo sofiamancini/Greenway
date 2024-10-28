@@ -27,3 +27,31 @@ Mockup: A wide, colorful bar spanning 80% of the screen width and visually promi
 Variation B - Small Progress Bar: A smaller, minimal progress bar located underneath the goal text.
 
 Mockup: A narrow, subtle progress bar beneath the goal description, with smaller, right-aligned percentage text.
+
+
+
+A/B Test Name: App Rating and Recommendation Survey Button Placement
+
+User Story Number: US4
+
+Metrics:
+Happiness Metric: Average app rating score (1-5 scale).
+Happiness Metric: Average recommendation rating score (1-10 scale).
+
+Hypothesis:
+If we present the app rating (1-5 scale) and the recommendation likelihood (1-10 scale) survey immediately after a user logs a goal, we expect higher completion rates and more positive feedback, as users may feel a sense of achievement. Conversely, presenting the survey after logout may lead to lower engagement and less thoughtful responses.
+What problem are we trying to solve? Its impact?
+We currently lack insight into user satisfaction with our app and their likelihood to recommend it to others. If users feel less inclined to provide ratings after logging out, we may miss out on valuable insights. Understanding user satisfaction is crucial for app retention and growth, making this an important area to address.
+
+Experiment:
+We will conduct an A/B test via Firebase, where 50% of users will receive the survey immediately after logging a goal, while the other 50% will see it after logging out. This random assignment will help us evaluate which timing yields better feedback collection.
+
+Tracking using Firebase Analytics:
+We will track the following:
+App Rating Score: Average score given by users (1-5 scale) in both groups.
+Recommendation Likelihood: Average score of how likely users are to recommend the app (1-10 scale).
+
+Variations:
+Variation A: Survey after logging a goal (users will be directed to the survey page, asking for app rating and likelihood to recommend the app immediately after logging their goal).
+Variation B: Survey after logging out (users are prompted to rate the app and indicate their recommendation likelihood upon logging out).
+

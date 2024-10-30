@@ -55,11 +55,11 @@ Variations:
 
 Variation A: Survey after logging a goal (users will be directed to the survey page, asking for app rating and likelihood to recommend the app immediately after logging their goal).
 
-Mockup: A survey page appears after user logs a goal, prompting users to rate the app (1-5 scale) and indicate their likelihood of recommending it to a friend (1-10 scale).
+Mockup: A survey page appears after user logs a goal, prompting users to rate the app (1-5 scale) and indicate their likelihood of recommending the app (1-10 scale).
 
 Variation B: Survey after logging out (users are prompted to rate the app and indicate their recommendation likelihood upon logging out).
 
-Mockup: A survey page appears after user logged out, prompting users to rate the app (1-5 scale) and indicate their likelihood of recommending it to a friend (1-10 scale).
+Mockup: A survey page appears after user logged out, prompting users to rate the app (1-5 scale) and indicate their likelihood of recommending the app (1-10 scale).
 
 
 

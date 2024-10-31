@@ -90,3 +90,21 @@ Mockup: A 40x40 approximate rounded box button that is identical to the rest of 
 Variation B - A Log Goal button that is detached from the actual screen, and has a plus on it.
 Mockup: A smaller floating button on the right hand corner of the screen, similar color scheme.
 
+
+
+A/B Test Name: Survey Page Text
+User Story Number: US4 
+Metrics: Happiness Metric: Survey submission rate, measuring the percentage of users who complete and submit the survey.
+Hypothesis: An inviting prompt will encourage users to submit the survey by creating a more welcoming tone, while a straightforward prompt may feel less engaging.
+What Problem Are We Trying to Solve? Its Impact? Problem: Low survey submission rates may prevent us from understanding user satisfaction and gathering useful feedback to enhance the app experience. Impact: Optimizing survey text could lead to higher submission rates, giving us valuable insights into user happiness, which could guide future improvements.
+
+Experiment: Audience: We’ll target 50% of the user base for this experiment, with a 50/50 split between the two text variations.
+Tracking (using Firebase Analytics): Survey Submission Rate: The rate at which users complete and submit the survey for each prompt style.
+
+Variations:
+Variation A - Friendly Prompting Text
+Text: "Help us improve your experience!" at the top of the page, followed by "How is your experience with the app so far?" above the star rating.
+Mockup: A survey page opens with a friendly, inviting message at the top, leading into a question above the rating scale.
+Variation B - Direct Prompting Text
+Text: "Would you like to give us a rating?" at the top of the page, followed by "How many stars would you rate the app?" above the stars.
+Mockup: A survey page opens with straightforward text, directly asking for feedback.

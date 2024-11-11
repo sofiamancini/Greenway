@@ -147,6 +147,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                 text: 'Signup',
                               ),
                               Tab(
+                                key: ValueKey('LoginTab_7ff5'),
                                 text: 'Login',
                               ),
                             ],
@@ -526,6 +527,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                       SizedBox(
                                         width: 321.0,
                                         child: TextFormField(
+                                          key: const ValueKey('Login-Email_t4fx'),
                                           controller:
                                               _model.loginEmailTextController,
                                           focusNode: _model.loginEmailFocusNode,
@@ -644,6 +646,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                       SizedBox(
                                         width: 321.0,
                                         child: TextFormField(
+                                          key: const ValueKey('Login-Password_7wq7'),
                                           controller: _model
                                               .loginPasswordTextController,
                                           focusNode:
@@ -796,7 +799,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                 logFirebaseEvent('logged_in');
                                 logFirebaseEvent('Login-Button_navigate_to');
 
-                                context.goNamedAuth('Main', context.mounted);
+                                context.pushNamedAuth(
+                                    'Survey', context.mounted);
                               },
                               text: 'Login',
                               options: FFButtonOptions(

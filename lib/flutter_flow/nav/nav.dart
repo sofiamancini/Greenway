@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '/backend/backend.dart';
 
 import '/auth/base_auth_user_provider.dart';
 
 import '/index.dart';
+import '/main.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 
@@ -67,18 +69,21 @@ class AppStateNotifier extends ChangeNotifier {
   }
 }
 
-GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
+GoRouter createRouter(AppStateNotifier appStateNotifier, [Widget? entryPage]) =>
+    GoRouter(
       initialLocation: '/',
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
-      errorBuilder: (context, state) =>
-          appStateNotifier.loggedIn ? const MainWidget() : const HomePageWidget(),
+      errorBuilder: (context, state) => appStateNotifier.loggedIn
+          ? entryPage ?? const NavBarPage()
+          : const HomePageWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
-          builder: (context, _) =>
-              appStateNotifier.loggedIn ? const MainWidget() : const HomePageWidget(),
+          builder: (context, _) => appStateNotifier.loggedIn
+              ? entryPage ?? const NavBarPage()
+              : const HomePageWidget(),
         ),
         FFRoute(
           name: 'HomePage',
@@ -88,7 +93,22 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'Main',
           path: '/main',
-          builder: (context, params) => const MainWidget(),
+          builder: (context, params) => params.isEmpty
+              ? const NavBarPage(initialPage: 'Main')
+              : MainWidget(
+                  goalType: params.getParam(
+                    'goalType',
+                    ParamType.String,
+                  ),
+                  targetOutput: params.getParam(
+                    'targetOutput',
+                    ParamType.String,
+                  ),
+                  timeFrame: params.getParam(
+                    'timeFrame',
+                    ParamType.String,
+                  ),
+                ),
         ),
         FFRoute(
           name: 'onboarding',
@@ -103,7 +123,18 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'EditGoal',
           path: '/EditGoal',
-          builder: (context, params) => const EditGoalWidget(),
+          builder: (context, params) => EditGoalWidget(
+            goalsDocument: params.getParam(
+              'goalsDocument',
+              ParamType.DocumentReference,
+              isList: false,
+              collectionNamePath: ['goals'],
+            ),
+            goalType: params.getParam(
+              'goalType',
+              ParamType.String,
+            ),
+          ),
         ),
         FFRoute(
           name: 'LogGoal',
@@ -114,6 +145,40 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'Survey',
           path: '/survey',
           builder: (context, params) => const SurveyWidget(),
+        ),
+        FFRoute(
+          name: 'scanner_main',
+          path: '/scannerMain',
+          builder: (context, params) => params.isEmpty
+              ? const NavBarPage(initialPage: 'scanner_main')
+              : const ScannerMainWidget(),
+        ),
+        FFRoute(
+          name: 'Detail_page',
+          path: '/detailPage',
+          asyncParams: {
+            'itemdetail': getDoc(['items'], ItemsRecord.fromSnapshot),
+          },
+          builder: (context, params) => DetailPageWidget(
+            itemdetail: params.getParam(
+              'itemdetail',
+              ParamType.Document,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: 'deleted_items',
+          path: '/deletedItems',
+          builder: (context, params) => params.isEmpty
+              ? const NavBarPage(initialPage: 'deleted_items')
+              : const DeletedItemsWidget(),
+        ),
+        FFRoute(
+          name: 'newGoals_List',
+          path: '/newGoalsList',
+          builder: (context, params) => params.isEmpty
+              ? const NavBarPage(initialPage: 'newGoals_List')
+              : const NewGoalsListWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

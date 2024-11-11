@@ -65,6 +65,11 @@ class GoalsRecord extends FirestoreRecord {
   int get progress => _progress ?? 0;
   bool hasProgress() => _progress != null;
 
+  // "deleted" field.
+  bool? _deleted;
+  bool get deleted => _deleted ?? false;
+  bool hasDeleted() => _deleted != null;
+
   void _initializeFields() {
     _frequency = snapshotData['frequency'] as String?;
     _date = snapshotData['date'] as DateTime?;
@@ -76,6 +81,7 @@ class GoalsRecord extends FirestoreRecord {
     _targetOutput = snapshotData['targetOutput'] as String?;
     _timeFrame = snapshotData['timeFrame'] as String?;
     _progress = castToType<int>(snapshotData['progress']);
+    _deleted = snapshotData['deleted'] as bool?;
   }
 
   static CollectionReference get collection =>
@@ -122,6 +128,7 @@ Map<String, dynamic> createGoalsRecordData({
   String? targetOutput,
   String? timeFrame,
   int? progress,
+  bool? deleted,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -135,6 +142,7 @@ Map<String, dynamic> createGoalsRecordData({
       'targetOutput': targetOutput,
       'timeFrame': timeFrame,
       'progress': progress,
+      'deleted': deleted,
     }.withoutNulls,
   );
 
@@ -155,7 +163,8 @@ class GoalsRecordDocumentEquality implements Equality<GoalsRecord> {
         e1?.goalType == e2?.goalType &&
         e1?.targetOutput == e2?.targetOutput &&
         e1?.timeFrame == e2?.timeFrame &&
-        e1?.progress == e2?.progress;
+        e1?.progress == e2?.progress &&
+        e1?.deleted == e2?.deleted;
   }
 
   @override
@@ -169,7 +178,8 @@ class GoalsRecordDocumentEquality implements Equality<GoalsRecord> {
         e?.goalType,
         e?.targetOutput,
         e?.timeFrame,
-        e?.progress
+        e?.progress,
+        e?.deleted
       ]);
 
   @override

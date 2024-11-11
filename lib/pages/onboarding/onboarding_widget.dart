@@ -425,7 +425,7 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                                     ));
                                     logFirebaseEvent('Button_navigate_to');
 
-                                    context.goNamed('Main');
+                                    context.goNamed('newGoals_List');
                                   },
                                   text: 'Continue',
                                   options: FFButtonOptions(

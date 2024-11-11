@@ -5,6 +5,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'log_goal_model.dart';
 export 'log_goal_model.dart';
 
@@ -26,11 +27,31 @@ class _LogGoalWidgetState extends State<LogGoalWidget> {
     _model = createModel(context, () => LogGoalModel());
 
     logFirebaseEvent('screen_view', parameters: {'screen_name': 'LogGoal'});
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      logFirebaseEvent('LOG_GOAL_PAGE_LogGoal_ON_INIT_STATE');
+      logFirebaseEvent('LogGoal_update_page_state');
+      _model.isDropDownLocked = false;
+      safeSetState(() {});
+    });
+
     _model.textController1 ??= TextEditingController();
     _model.textFieldFocusNode ??= FocusNode();
 
     _model.timeFieldTextController ??= TextEditingController();
     _model.timeFieldFocusNode ??= FocusNode();
+
+    _model.electricityFieldTextController ??= TextEditingController();
+    _model.electricityFieldFocusNode ??= FocusNode();
+
+    _model.wasteFieldTextController ??= TextEditingController();
+    _model.wasteFieldFocusNode ??= FocusNode();
+
+    _model.loadsFieldTextController ??= TextEditingController();
+    _model.loadsFieldFocusNode ??= FocusNode();
+
+    _model.otherFieldTextController ??= TextEditingController();
+    _model.otherFieldFocusNode ??= FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
@@ -75,6 +96,7 @@ class _LogGoalWidgetState extends State<LogGoalWidget> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               FlutterFlowIconButton(
+                                borderColor: Colors.transparent,
                                 borderRadius: 8.0,
                                 buttonSize: 40.0,
                                 icon: Icon(
@@ -86,9 +108,8 @@ class _LogGoalWidgetState extends State<LogGoalWidget> {
                                 onPressed: () async {
                                   logFirebaseEvent(
                                       'LOG_GOAL_PAGE_BackButton_ON_TAP');
-                                  logFirebaseEvent('BackButton_navigate_to');
-
-                                  context.pushNamed('Main');
+                                  logFirebaseEvent('BackButton_navigate_back');
+                                  context.safePop();
                                 },
                               ),
                               ClipRRect(
@@ -115,58 +136,106 @@ class _LogGoalWidgetState extends State<LogGoalWidget> {
                                 ),
                           ),
                         ),
+                        FlutterFlowDropDown<String>(
+                          controller: _model.actionTypeValueController ??=
+                              FormFieldController<String>(null),
+                          options: const ['Carbon', 'Water', 'Other'],
+                          onChanged: (val) async {
+                            safeSetState(() => _model.actionTypeValue = val);
+                            logFirebaseEvent(
+                                'LOG_GOAL_ActionType_ON_FORM_WIDGET_SELEC');
+                            logFirebaseEvent('ActionType_update_page_state');
+                            _model.selectedOption = _model.actionTypeValue!;
+                            safeSetState(() {});
+                            logFirebaseEvent('ActionType_update_page_state');
+                            _model.isDropDownLocked = true;
+                            safeSetState(() {});
+                          },
+                          width: double.infinity,
+                          height: 40.0,
+                          textStyle:
+                              FlutterFlowTheme.of(context).bodyMedium.override(
+                                    fontFamily: 'Inter',
+                                    letterSpacing: 0.0,
+                                  ),
+                          hintText: 'Type of Action:',
+                          icon: Icon(
+                            Icons.keyboard_arrow_down_rounded,
+                            color: FlutterFlowTheme.of(context).secondaryText,
+                            size: 24.0,
+                          ),
+                          fillColor: const Color(0xFF97B381),
+                          elevation: 2.0,
+                          borderColor: FlutterFlowTheme.of(context).primaryText,
+                          borderWidth: 1.0,
+                          borderRadius: 8.0,
+                          margin: const EdgeInsetsDirectional.fromSTEB(
+                              12.0, 0.0, 12.0, 0.0),
+                          hidesUnderline: true,
+                          disabled: _model.isDropDownLocked,
+                          isOverButton: false,
+                          isSearchable: false,
+                          isMultiSelect: false,
+                        ),
                         Padding(
                           padding: const EdgeInsetsDirectional.fromSTEB(
-                              0.0, 0.0, 0.0, 20.0),
+                              0.0, 20.0, 0.0, 20.0),
                           child: Container(
                             width: double.infinity,
                             height: 42.0,
                             decoration: const BoxDecoration(),
                             child: Stack(
                               children: [
-                                FlutterFlowDropDown<String>(
-                                  controller:
-                                      _model.actionOptionsValueController ??=
-                                          FormFieldController<String>(null),
-                                  options: const ['Driving', 'Showering', 'Etc.'],
-                                  onChanged: (val) async {
-                                    safeSetState(
-                                        () => _model.actionOptionsValue = val);
-                                    logFirebaseEvent(
-                                        'LOG_GOAL_ActionOptions_ON_FORM_WIDGET_SE');
-                                    logFirebaseEvent(
-                                        'ActionOptions_update_page_state');
-                                    _model.selectedOption = '\"\"';
-                                    safeSetState(() {});
-                                  },
-                                  width: double.infinity,
-                                  height: 40.0,
-                                  textStyle: FlutterFlowTheme.of(context)
-                                      .bodyMedium
-                                      .override(
-                                        fontFamily: 'Inter',
-                                        letterSpacing: 0.0,
-                                      ),
-                                  hintText: 'Action:',
-                                  icon: Icon(
-                                    Icons.keyboard_arrow_down_rounded,
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryText,
-                                    size: 24.0,
+                                if (_model.selectedOption == 'Carbon')
+                                  FlutterFlowDropDown<String>(
+                                    controller: _model
+                                            .carbonActionOptionsValueController ??=
+                                        FormFieldController<String>(null),
+                                    options: const [
+                                      'Driving',
+                                      'Electricity Usage',
+                                      'Waste Generation',
+                                      'Other'
+                                    ],
+                                    onChanged: (val) async {
+                                      safeSetState(() => _model
+                                          .carbonActionOptionsValue = val);
+                                      logFirebaseEvent(
+                                          'LOG_GOAL_CarbonActionOptions_ON_FORM_WID');
+                                      logFirebaseEvent(
+                                          'CarbonActionOptions_update_page_state');
+                                      _model.selectedAction =
+                                          _model.carbonActionOptionsValue!;
+                                      safeSetState(() {});
+                                    },
+                                    width: double.infinity,
+                                    height: 40.0,
+                                    textStyle: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily: 'Inter',
+                                          letterSpacing: 0.0,
+                                        ),
+                                    hintText: 'Action:',
+                                    icon: Icon(
+                                      Icons.keyboard_arrow_down_rounded,
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondaryText,
+                                      size: 24.0,
+                                    ),
+                                    fillColor: const Color(0xFF97B381),
+                                    elevation: 2.0,
+                                    borderColor: FlutterFlowTheme.of(context)
+                                        .primaryText,
+                                    borderWidth: 1.0,
+                                    borderRadius: 8.0,
+                                    margin: const EdgeInsetsDirectional.fromSTEB(
+                                        12.0, 0.0, 12.0, 0.0),
+                                    hidesUnderline: true,
+                                    isOverButton: false,
+                                    isSearchable: false,
+                                    isMultiSelect: false,
                                   ),
-                                  fillColor: const Color(0xFF97B381),
-                                  elevation: 2.0,
-                                  borderColor:
-                                      FlutterFlowTheme.of(context).primaryText,
-                                  borderWidth: 1.0,
-                                  borderRadius: 8.0,
-                                  margin: const EdgeInsetsDirectional.fromSTEB(
-                                      12.0, 0.0, 12.0, 0.0),
-                                  hidesUnderline: true,
-                                  isOverButton: false,
-                                  isSearchable: false,
-                                  isMultiSelect: false,
-                                ),
                                 if (_model.selectedOption == 'Etc.')
                                   SizedBox(
                                     width: double.infinity,
@@ -243,6 +312,56 @@ class _LogGoalWidgetState extends State<LogGoalWidget> {
                                           .asValidator(context),
                                     ),
                                   ),
+                                if (_model.selectedOption == 'Water')
+                                  FlutterFlowDropDown<String>(
+                                    controller: _model
+                                            .waterActionOptionsValueController ??=
+                                        FormFieldController<String>(null),
+                                    options: const [
+                                      'Showering',
+                                      'Laundry',
+                                      'Dishwasher',
+                                      'Other'
+                                    ],
+                                    onChanged: (val) async {
+                                      safeSetState(() =>
+                                          _model.waterActionOptionsValue = val);
+                                      logFirebaseEvent(
+                                          'LOG_GOAL_WaterActionOptions_ON_FORM_WIDG');
+                                      logFirebaseEvent(
+                                          'WaterActionOptions_update_page_state');
+                                      _model.selectedAction =
+                                          _model.waterActionOptionsValue!;
+                                      safeSetState(() {});
+                                    },
+                                    width: double.infinity,
+                                    height: 40.0,
+                                    textStyle: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily: 'Inter',
+                                          letterSpacing: 0.0,
+                                        ),
+                                    hintText: 'Action:',
+                                    icon: Icon(
+                                      Icons.keyboard_arrow_down_rounded,
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondaryText,
+                                      size: 24.0,
+                                    ),
+                                    fillColor: const Color(0xFF97B381),
+                                    elevation: 2.0,
+                                    borderColor: FlutterFlowTheme.of(context)
+                                        .primaryText,
+                                    borderWidth: 1.0,
+                                    borderRadius: 8.0,
+                                    margin: const EdgeInsetsDirectional.fromSTEB(
+                                        12.0, 0.0, 12.0, 0.0),
+                                    hidesUnderline: true,
+                                    isOverButton: false,
+                                    isSearchable: false,
+                                    isMultiSelect: false,
+                                  ),
                               ],
                             ),
                           ),
@@ -255,176 +374,433 @@ class _LogGoalWidgetState extends State<LogGoalWidget> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                'How much time did you spend doing this?',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: 'Inter',
-                                      letterSpacing: 0.0,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                              ),
-                              Container(
-                                width: double.infinity,
-                                height: 42.0,
-                                decoration: const BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                      blurRadius: 4.0,
-                                      color: Color(0x33000000),
-                                      offset: Offset(
-                                        0.0,
-                                        2.0,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                child: SizedBox(
-                                  width: 200.0,
-                                  child: TextFormField(
-                                    controller: _model.timeFieldTextController,
-                                    focusNode: _model.timeFieldFocusNode,
-                                    autofocus: false,
-                                    obscureText: false,
-                                    decoration: InputDecoration(
-                                      isDense: true,
-                                      labelStyle: FlutterFlowTheme.of(context)
-                                          .headlineLarge
-                                          .override(
-                                            fontFamily: 'Inter Tight',
-                                            letterSpacing: 0.0,
+                              Stack(
+                                children: [
+                                  if ((_model.carbonActionOptionsValue ==
+                                          'Driving') ||
+                                      (_model.waterActionOptionsValue ==
+                                          'Showering'))
+                                    SizedBox(
+                                      width: double.infinity,
+                                      child: TextFormField(
+                                        controller:
+                                            _model.timeFieldTextController,
+                                        focusNode: _model.timeFieldFocusNode,
+                                        autofocus: false,
+                                        obscureText: false,
+                                        decoration: InputDecoration(
+                                          isDense: true,
+                                          labelStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .headlineLarge
+                                                  .override(
+                                                    fontFamily: 'Inter Tight',
+                                                    letterSpacing: 0.0,
+                                                  ),
+                                          hintText: 'Time (minutes)',
+                                          hintStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMedium
+                                                  .override(
+                                                    fontFamily: 'Inter',
+                                                    letterSpacing: 0.0,
+                                                  ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                              width: 1.0,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
                                           ),
-                                      hintText: 'Time (in Minutes)',
-                                      hintStyle: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Inter',
-                                            letterSpacing: 0.0,
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: const BorderSide(
+                                              color: Color(0x00000000),
+                                              width: 1.0,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
                                           ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryText,
-                                          width: 1.0,
+                                          errorBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .error,
+                                              width: 1.0,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                          ),
+                                          focusedErrorBorder:
+                                              OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .error,
+                                              width: 1.0,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                          ),
+                                          filled: true,
+                                          fillColor: const Color(0xFF97B381),
                                         ),
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .override(
+                                              fontFamily: 'Inter',
+                                              letterSpacing: 0.0,
+                                            ),
+                                        cursorColor:
+                                            FlutterFlowTheme.of(context)
+                                                .primaryText,
+                                        validator: _model
+                                            .timeFieldTextControllerValidator
+                                            .asValidator(context),
                                       ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: const BorderSide(
-                                          color: Color(0x00000000),
-                                          width: 1.0,
-                                        ),
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
-                                      ),
-                                      errorBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: FlutterFlowTheme.of(context)
-                                              .error,
-                                          width: 1.0,
-                                        ),
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
-                                      ),
-                                      focusedErrorBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: FlutterFlowTheme.of(context)
-                                              .error,
-                                          width: 1.0,
-                                        ),
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
-                                      ),
-                                      filled: true,
-                                      fillColor: const Color(0xFF97B381),
                                     ),
-                                    style: FlutterFlowTheme.of(context)
-                                        .bodyMedium
-                                        .override(
-                                          fontFamily: 'Inter',
-                                          letterSpacing: 0.0,
+                                  if (_model.carbonActionOptionsValue ==
+                                      'Electricity Usage')
+                                    SizedBox(
+                                      width: double.infinity,
+                                      child: TextFormField(
+                                        controller: _model
+                                            .electricityFieldTextController,
+                                        focusNode:
+                                            _model.electricityFieldFocusNode,
+                                        autofocus: false,
+                                        obscureText: false,
+                                        decoration: InputDecoration(
+                                          isDense: true,
+                                          labelStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .headlineLarge
+                                                  .override(
+                                                    fontFamily: 'Inter Tight',
+                                                    letterSpacing: 0.0,
+                                                  ),
+                                          hintText: 'Kilowatt-hours (kWh)',
+                                          hintStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMedium
+                                                  .override(
+                                                    fontFamily: 'Inter',
+                                                    letterSpacing: 0.0,
+                                                  ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                              width: 1.0,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: const BorderSide(
+                                              color: Color(0x00000000),
+                                              width: 1.0,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                          ),
+                                          errorBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .error,
+                                              width: 1.0,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                          ),
+                                          focusedErrorBorder:
+                                              OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .error,
+                                              width: 1.0,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                          ),
+                                          filled: true,
+                                          fillColor: const Color(0xFF97B381),
                                         ),
-                                    cursorColor: FlutterFlowTheme.of(context)
-                                        .primaryText,
-                                    validator: _model
-                                        .timeFieldTextControllerValidator
-                                        .asValidator(context),
-                                  ),
-                                ),
-                              ),
-                            ].divide(const SizedBox(height: 7.0)),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
-                              0.0, 0.0, 0.0, 20.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'How intensive was this action?',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: 'Inter',
-                                      letterSpacing: 0.0,
-                                      fontWeight: FontWeight.w500,
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .override(
+                                              fontFamily: 'Inter',
+                                              letterSpacing: 0.0,
+                                            ),
+                                        cursorColor:
+                                            FlutterFlowTheme.of(context)
+                                                .primaryText,
+                                        validator: _model
+                                            .electricityFieldTextControllerValidator
+                                            .asValidator(context),
+                                      ),
                                     ),
-                              ),
-                              Container(
-                                width: double.infinity,
-                                height: 42.0,
-                                decoration: const BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                      blurRadius: 4.0,
-                                      color: Color(0x33000000),
-                                      offset: Offset(
-                                        0.0,
-                                        2.0,
+                                  if (_model.carbonActionOptionsValue ==
+                                      'Waste Generation')
+                                    SizedBox(
+                                      width: double.infinity,
+                                      child: TextFormField(
+                                        controller:
+                                            _model.wasteFieldTextController,
+                                        focusNode: _model.wasteFieldFocusNode,
+                                        autofocus: false,
+                                        obscureText: false,
+                                        decoration: InputDecoration(
+                                          isDense: true,
+                                          labelStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .headlineLarge
+                                                  .override(
+                                                    fontFamily: 'Inter Tight',
+                                                    letterSpacing: 0.0,
+                                                  ),
+                                          hintText: 'Amount (bags, items, etc)',
+                                          hintStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMedium
+                                                  .override(
+                                                    fontFamily: 'Inter',
+                                                    letterSpacing: 0.0,
+                                                  ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                              width: 1.0,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: const BorderSide(
+                                              color: Color(0x00000000),
+                                              width: 1.0,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                          ),
+                                          errorBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .error,
+                                              width: 1.0,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                          ),
+                                          focusedErrorBorder:
+                                              OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .error,
+                                              width: 1.0,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                          ),
+                                          filled: true,
+                                          fillColor: const Color(0xFF97B381),
+                                        ),
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .override(
+                                              fontFamily: 'Inter',
+                                              letterSpacing: 0.0,
+                                            ),
+                                        cursorColor:
+                                            FlutterFlowTheme.of(context)
+                                                .primaryText,
+                                        validator: _model
+                                            .wasteFieldTextControllerValidator
+                                            .asValidator(context),
                                       ),
-                                    )
-                                  ],
-                                ),
-                                child: FlutterFlowDropDown<String>(
-                                  controller: _model
-                                          .intensityDropDownValueController ??=
-                                      FormFieldController<String>(null),
-                                  options: const ['Low', 'Medium', 'High'],
-                                  onChanged: (val) => safeSetState(() =>
-                                      _model.intensityDropDownValue = val),
-                                  width: 200.0,
-                                  height: 40.0,
-                                  textStyle: FlutterFlowTheme.of(context)
-                                      .bodyMedium
-                                      .override(
-                                        fontFamily: 'Inter',
-                                        letterSpacing: 0.0,
+                                    ),
+                                  if ((_model.waterActionOptionsValue ==
+                                          'Laundry') &&
+                                      (_model.waterActionOptionsValue ==
+                                          'Dishwasher'))
+                                    SizedBox(
+                                      width: double.infinity,
+                                      child: TextFormField(
+                                        controller:
+                                            _model.loadsFieldTextController,
+                                        focusNode: _model.loadsFieldFocusNode,
+                                        autofocus: false,
+                                        obscureText: false,
+                                        decoration: InputDecoration(
+                                          isDense: true,
+                                          labelStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .headlineLarge
+                                                  .override(
+                                                    fontFamily: 'Inter Tight',
+                                                    letterSpacing: 0.0,
+                                                  ),
+                                          hintText: 'Number of loads',
+                                          hintStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMedium
+                                                  .override(
+                                                    fontFamily: 'Inter',
+                                                    letterSpacing: 0.0,
+                                                  ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                              width: 1.0,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: const BorderSide(
+                                              color: Color(0x00000000),
+                                              width: 1.0,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                          ),
+                                          errorBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .error,
+                                              width: 1.0,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                          ),
+                                          focusedErrorBorder:
+                                              OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .error,
+                                              width: 1.0,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                          ),
+                                          filled: true,
+                                          fillColor: const Color(0xFF97B381),
+                                        ),
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .override(
+                                              fontFamily: 'Inter',
+                                              letterSpacing: 0.0,
+                                            ),
+                                        cursorColor:
+                                            FlutterFlowTheme.of(context)
+                                                .primaryText,
+                                        validator: _model
+                                            .loadsFieldTextControllerValidator
+                                            .asValidator(context),
                                       ),
-                                  hintText: 'i.e. Low, Medium, High',
-                                  icon: Icon(
-                                    Icons.keyboard_arrow_down_rounded,
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryText,
-                                    size: 24.0,
-                                  ),
-                                  fillColor: const Color(0xFF97B381),
-                                  elevation: 2.0,
-                                  borderColor:
-                                      FlutterFlowTheme.of(context).primaryText,
-                                  borderWidth: 1.0,
-                                  borderRadius: 8.0,
-                                  margin: const EdgeInsetsDirectional.fromSTEB(
-                                      12.0, 0.0, 12.0, 0.0),
-                                  hidesUnderline: true,
-                                  isOverButton: false,
-                                  isSearchable: false,
-                                  isMultiSelect: false,
-                                ),
+                                    ),
+                                  if ((_model.actionTypeValue == 'Other') ||
+                                      (_model.carbonActionOptionsValue ==
+                                          'Other') ||
+                                      (_model.waterActionOptionsValue ==
+                                          'Other'))
+                                    SizedBox(
+                                      width: double.infinity,
+                                      child: TextFormField(
+                                        controller:
+                                            _model.otherFieldTextController,
+                                        focusNode: _model.otherFieldFocusNode,
+                                        autofocus: false,
+                                        obscureText: false,
+                                        decoration: InputDecoration(
+                                          isDense: true,
+                                          labelStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .headlineLarge
+                                                  .override(
+                                                    fontFamily: 'Inter Tight',
+                                                    letterSpacing: 0.0,
+                                                  ),
+                                          hintText:
+                                              'How much did this push you towards your goal? (%)',
+                                          hintStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMedium
+                                                  .override(
+                                                    fontFamily: 'Inter',
+                                                    letterSpacing: 0.0,
+                                                  ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                              width: 1.0,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: const BorderSide(
+                                              color: Color(0x00000000),
+                                              width: 1.0,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                          ),
+                                          errorBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .error,
+                                              width: 1.0,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                          ),
+                                          focusedErrorBorder:
+                                              OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .error,
+                                              width: 1.0,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                          ),
+                                          filled: true,
+                                          fillColor: const Color(0xFF97B381),
+                                        ),
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .override(
+                                              fontFamily: 'Inter',
+                                              letterSpacing: 0.0,
+                                            ),
+                                        cursorColor:
+                                            FlutterFlowTheme.of(context)
+                                                .primaryText,
+                                        validator: _model
+                                            .otherFieldTextControllerValidator
+                                            .asValidator(context),
+                                      ),
+                                    ),
+                                ],
                               ),
                             ].divide(const SizedBox(height: 7.0)),
                           ),
@@ -541,7 +917,7 @@ class _LogGoalWidgetState extends State<LogGoalWidget> {
                                         }
                                       },
                                       child: Container(
-                                        width: 349.0,
+                                        width: 330.0,
                                         height: 100.0,
                                         decoration: BoxDecoration(
                                           borderRadius:
@@ -550,40 +926,25 @@ class _LogGoalWidgetState extends State<LogGoalWidget> {
                                         child: Row(
                                           mainAxisSize: MainAxisSize.max,
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
+                                              MainAxisAlignment.start,
                                           children: [
                                             Align(
                                               alignment: const AlignmentDirectional(
                                                   -1.0, 0.0),
-                                              child: Text(
-                                                'Date:',
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          fontFamily: 'Inter',
-                                                          letterSpacing: 0.0,
-                                                        ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsetsDirectional
-                                                  .fromSTEB(
-                                                      200.0, 0.0, 0.0, 0.0),
-                                              child: FlutterFlowIconButton(
-                                                borderRadius: 8.0,
-                                                buttonSize: 40.0,
-                                                fillColor:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primary,
-                                                icon: const Icon(
-                                                  Icons.calendar_today_outlined,
-                                                  size: 24.0,
+                                              child: Padding(
+                                                padding: const EdgeInsetsDirectional
+                                                    .fromSTEB(
+                                                        10.0, 0.0, 0.0, 0.0),
+                                                child: Text(
+                                                  'Date:',
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .bodyMedium
+                                                      .override(
+                                                        fontFamily: 'Inter',
+                                                        letterSpacing: 0.0,
+                                                      ),
                                                 ),
-                                                onPressed: () {
-                                                  print(
-                                                      'CalendarIcon pressed ...');
-                                                },
                                               ),
                                             ),
                                           ].divide(const SizedBox(width: 20.0)),
@@ -629,7 +990,7 @@ class _LogGoalWidgetState extends State<LogGoalWidget> {
                             ),
                           ),
                         ),
-                      ],
+                      ].divide(const SizedBox(height: 10.0)),
                     ),
                   ),
                 ),

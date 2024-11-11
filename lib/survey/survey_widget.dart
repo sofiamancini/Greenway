@@ -476,10 +476,11 @@ class _SurveyWidgetState extends State<SurveyWidget> {
                       await currentUserReference!.update(createUsersRecordData(
                         satisfactionRating: _model.ratingBarValue?.round(),
                         recommendationRating: _model.rating,
+                        email: '',
                       ));
                       logFirebaseEvent('Button_navigate_to');
 
-                      context.pushNamed('Main');
+                      context.pushNamed('newGoals_List');
                     },
                     text: 'Submit',
                     options: FFButtonOptions(

@@ -8,6 +8,8 @@ class NewGoalModel extends FlutterFlowModel<NewGoalWidget> {
 
   String selectedOption = '\"\"';
 
+  String goalType = 'Action';
+
   ///  State fields for stateful widgets in this page.
 
   // State field(s) for AddAction widget.

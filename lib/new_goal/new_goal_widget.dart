@@ -1,3 +1,4 @@
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -84,9 +85,8 @@ class _NewGoalWidgetState extends State<NewGoalWidget> {
                                 onPressed: () async {
                                   logFirebaseEvent(
                                       'NEW_GOAL_PAGE_BackButton_ON_TAP');
-                                  logFirebaseEvent('BackButton_navigate_to');
-
-                                  context.pushNamed('Main');
+                                  logFirebaseEvent('BackButton_navigate_back');
+                                  context.safePop();
                                 },
                               ),
                               ClipRRect(
@@ -119,14 +119,22 @@ class _NewGoalWidgetState extends State<NewGoalWidget> {
                           child: FlutterFlowDropDown<String>(
                             controller: _model.addActionValueController ??=
                                 FormFieldController<String>(null),
-                            options: const ['Driving', 'Showering', 'Etc.'],
+                            options: const [
+                              ' Carbon Footprint',
+                              'Water Usage',
+                              'Electricity Usage'
+                            ],
                             onChanged: (val) async {
                               safeSetState(() => _model.addActionValue = val);
                               logFirebaseEvent(
                                   'NEW_GOAL_AddAction_ON_FORM_WIDGET_SELECT');
-                              logFirebaseEvent('AddAction_update_page_state');
-                              _model.selectedOption = _model.addActionValue!;
-                              safeSetState(() {});
+                              logFirebaseEvent('AddAction_backend_call');
+
+                              await GoalsRecord.collection
+                                  .doc()
+                                  .set(createGoalsRecordData(
+                                    goalType: _model.addActionValue,
+                                  ));
                             },
                             width: 351.0,
                             height: 40.0,
@@ -283,9 +291,9 @@ class _NewGoalWidgetState extends State<NewGoalWidget> {
                                 controller: _model.carbonGoalValueController ??=
                                     FormFieldController<String>(null),
                                 options: const [
-                                  'Better than Average',
+                                  'Greater than Average',
                                   'Average',
-                                  'Above Average'
+                                  'Less than Average'
                                 ],
                                 onChanged: (val) => safeSetState(
                                     () => _model.carbonGoalValue = val),
@@ -297,7 +305,7 @@ class _NewGoalWidgetState extends State<NewGoalWidget> {
                                       fontFamily: 'Inter',
                                       letterSpacing: 0.0,
                                     ),
-                                hintText: 'Carbon Goal:',
+                                hintText: 'Usage Goal:',
                                 icon: Icon(
                                   Icons.keyboard_arrow_down_rounded,
                                   color: FlutterFlowTheme.of(context)
@@ -393,11 +401,33 @@ class _NewGoalWidgetState extends State<NewGoalWidget> {
                                   await GoalsRecord.collection
                                       .doc()
                                       .set(createGoalsRecordData(
-                                        frequency: _model.frequencyValue,
+                                        targetOutput: _model.carbonGoalValue,
+                                        timeFrame: _model.frequencyValue,
+                                        progress: 0,
+                                        goalType: _model.addActionValue,
+                                        user: currentUserReference,
+                                        created: getCurrentTimestamp,
+                                        deleted: false,
                                       ));
                                   logFirebaseEvent('AddButton_navigate_to');
 
-                                  context.pushNamed('Survey');
+                                  context.pushNamed(
+                                    'Main',
+                                    queryParameters: {
+                                      'goalType': serializeParam(
+                                        '',
+                                        ParamType.String,
+                                      ),
+                                      'targetOutput': serializeParam(
+                                        '',
+                                        ParamType.String,
+                                      ),
+                                      'timeFrame': serializeParam(
+                                        '',
+                                        ParamType.String,
+                                      ),
+                                    }.withoutNulls,
+                                  );
                                 },
                                 text: 'Add',
                                 options: FFButtonOptions(

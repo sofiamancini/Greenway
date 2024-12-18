@@ -1,0 +1,14 @@
+# Ignore temporary files
+*.tmp
+*.log
+
+# Ignore build artifacts
+_site/
+public/
+
+# Ignore generated files
+*.bak
+*.swp
+
+# Ignore macOS system files
+.DS_Store

@@ -15,30 +15,10 @@ class GoalsRecord extends FirestoreRecord {
     _initializeFields();
   }
 
-  // "action" field.
-  String? _action;
-  String get action => _action ?? '';
-  bool hasAction() => _action != null;
-
-  // "carbon" field.
-  int? _carbon;
-  int get carbon => _carbon ?? 0;
-  bool hasCarbon() => _carbon != null;
-
   // "frequency" field.
-  DateTime? _frequency;
-  DateTime? get frequency => _frequency;
+  String? _frequency;
+  String get frequency => _frequency ?? '';
   bool hasFrequency() => _frequency != null;
-
-  // "time" field.
-  int? _time;
-  int get time => _time ?? 0;
-  bool hasTime() => _time != null;
-
-  // "intensity" field.
-  String? _intensity;
-  String get intensity => _intensity ?? '';
-  bool hasIntensity() => _intensity != null;
 
   // "date" field.
   DateTime? _date;
@@ -55,15 +35,53 @@ class GoalsRecord extends FirestoreRecord {
   DateTime? get created => _created;
   bool hasCreated() => _created != null;
 
+  // "water" field.
+  String? _water;
+  String get water => _water ?? '';
+  bool hasWater() => _water != null;
+
+  // "carbon" field.
+  String? _carbon;
+  String get carbon => _carbon ?? '';
+  bool hasCarbon() => _carbon != null;
+
+  // "goalType" field.
+  String? _goalType;
+  String get goalType => _goalType ?? '';
+  bool hasGoalType() => _goalType != null;
+
+  // "targetOutput" field.
+  String? _targetOutput;
+  String get targetOutput => _targetOutput ?? '';
+  bool hasTargetOutput() => _targetOutput != null;
+
+  // "timeFrame" field.
+  String? _timeFrame;
+  String get timeFrame => _timeFrame ?? '';
+  bool hasTimeFrame() => _timeFrame != null;
+
+  // "progress" field.
+  int? _progress;
+  int get progress => _progress ?? 0;
+  bool hasProgress() => _progress != null;
+
+  // "deleted" field.
+  bool? _deleted;
+  bool get deleted => _deleted ?? false;
+  bool hasDeleted() => _deleted != null;
+
   void _initializeFields() {
-    _action = snapshotData['action'] as String?;
-    _carbon = castToType<int>(snapshotData['carbon']);
-    _frequency = snapshotData['frequency'] as DateTime?;
-    _time = castToType<int>(snapshotData['time']);
-    _intensity = snapshotData['intensity'] as String?;
+    _frequency = snapshotData['frequency'] as String?;
     _date = snapshotData['date'] as DateTime?;
     _user = snapshotData['user'] as DocumentReference?;
     _created = snapshotData['created'] as DateTime?;
+    _water = snapshotData['water'] as String?;
+    _carbon = snapshotData['carbon'] as String?;
+    _goalType = snapshotData['goalType'] as String?;
+    _targetOutput = snapshotData['targetOutput'] as String?;
+    _timeFrame = snapshotData['timeFrame'] as String?;
+    _progress = castToType<int>(snapshotData['progress']);
+    _deleted = snapshotData['deleted'] as bool?;
   }
 
   static CollectionReference get collection =>
@@ -100,25 +118,31 @@ class GoalsRecord extends FirestoreRecord {
 }
 
 Map<String, dynamic> createGoalsRecordData({
-  String? action,
-  int? carbon,
-  DateTime? frequency,
-  int? time,
-  String? intensity,
+  String? frequency,
   DateTime? date,
   DocumentReference? user,
   DateTime? created,
+  String? water,
+  String? carbon,
+  String? goalType,
+  String? targetOutput,
+  String? timeFrame,
+  int? progress,
+  bool? deleted,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
-      'action': action,
-      'carbon': carbon,
       'frequency': frequency,
-      'time': time,
-      'intensity': intensity,
       'date': date,
       'user': user,
       'created': created,
+      'water': water,
+      'carbon': carbon,
+      'goalType': goalType,
+      'targetOutput': targetOutput,
+      'timeFrame': timeFrame,
+      'progress': progress,
+      'deleted': deleted,
     }.withoutNulls,
   );
 
@@ -130,26 +154,32 @@ class GoalsRecordDocumentEquality implements Equality<GoalsRecord> {
 
   @override
   bool equals(GoalsRecord? e1, GoalsRecord? e2) {
-    return e1?.action == e2?.action &&
-        e1?.carbon == e2?.carbon &&
-        e1?.frequency == e2?.frequency &&
-        e1?.time == e2?.time &&
-        e1?.intensity == e2?.intensity &&
+    return e1?.frequency == e2?.frequency &&
         e1?.date == e2?.date &&
         e1?.user == e2?.user &&
-        e1?.created == e2?.created;
+        e1?.created == e2?.created &&
+        e1?.water == e2?.water &&
+        e1?.carbon == e2?.carbon &&
+        e1?.goalType == e2?.goalType &&
+        e1?.targetOutput == e2?.targetOutput &&
+        e1?.timeFrame == e2?.timeFrame &&
+        e1?.progress == e2?.progress &&
+        e1?.deleted == e2?.deleted;
   }
 
   @override
   int hash(GoalsRecord? e) => const ListEquality().hash([
-        e?.action,
-        e?.carbon,
         e?.frequency,
-        e?.time,
-        e?.intensity,
         e?.date,
         e?.user,
-        e?.created
+        e?.created,
+        e?.water,
+        e?.carbon,
+        e?.goalType,
+        e?.targetOutput,
+        e?.timeFrame,
+        e?.progress,
+        e?.deleted
       ]);
 
   @override

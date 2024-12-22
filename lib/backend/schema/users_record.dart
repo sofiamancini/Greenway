@@ -50,6 +50,16 @@ class UsersRecord extends FirestoreRecord {
   bool get notifs => _notifs ?? false;
   bool hasNotifs() => _notifs != null;
 
+  // "satisfaction_rating" field.
+  int? _satisfactionRating;
+  int get satisfactionRating => _satisfactionRating ?? 0;
+  bool hasSatisfactionRating() => _satisfactionRating != null;
+
+  // "recommendation_rating" field.
+  int? _recommendationRating;
+  int get recommendationRating => _recommendationRating ?? 0;
+  bool hasRecommendationRating() => _recommendationRating != null;
+
   void _initializeFields() {
     _email = snapshotData['email'] as String?;
     _displayName = snapshotData['display_name'] as String?;
@@ -58,6 +68,9 @@ class UsersRecord extends FirestoreRecord {
     _createdTime = snapshotData['created_time'] as DateTime?;
     _phoneNumber = snapshotData['phone_number'] as String?;
     _notifs = snapshotData['notifs'] as bool?;
+    _satisfactionRating = castToType<int>(snapshotData['satisfaction_rating']);
+    _recommendationRating =
+        castToType<int>(snapshotData['recommendation_rating']);
   }
 
   static CollectionReference get collection =>
@@ -101,6 +114,8 @@ Map<String, dynamic> createUsersRecordData({
   DateTime? createdTime,
   String? phoneNumber,
   bool? notifs,
+  int? satisfactionRating,
+  int? recommendationRating,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -111,6 +126,8 @@ Map<String, dynamic> createUsersRecordData({
       'created_time': createdTime,
       'phone_number': phoneNumber,
       'notifs': notifs,
+      'satisfaction_rating': satisfactionRating,
+      'recommendation_rating': recommendationRating,
     }.withoutNulls,
   );
 
@@ -128,7 +145,9 @@ class UsersRecordDocumentEquality implements Equality<UsersRecord> {
         e1?.uid == e2?.uid &&
         e1?.createdTime == e2?.createdTime &&
         e1?.phoneNumber == e2?.phoneNumber &&
-        e1?.notifs == e2?.notifs;
+        e1?.notifs == e2?.notifs &&
+        e1?.satisfactionRating == e2?.satisfactionRating &&
+        e1?.recommendationRating == e2?.recommendationRating;
   }
 
   @override
@@ -139,7 +158,9 @@ class UsersRecordDocumentEquality implements Equality<UsersRecord> {
         e?.uid,
         e?.createdTime,
         e?.phoneNumber,
-        e?.notifs
+        e?.notifs,
+        e?.satisfactionRating,
+        e?.recommendationRating
       ]);
 
   @override
